@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Message</title>
+    <style>
+        @font-face {
+    font-family: 'BN Nokyo';
+    src: url(/FONTS/Nokyo/BNNokyoVariableVF.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Genos';
+    src: url(/FONTS/Genos/Genos-Regular.ttf) format('truetype');
+}
+.container{
+    background-color: #060C22;
+    width: 100%;
+    height: 100vh;
+}
+.img_container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h1{
+    font-family: 'Genos';
+font-weight: bold;
+font-size: 40px;
+line-height: 25px;
+letter-spacing: -0.457589px;
+color: #E4ECFE;
+margin-top: 50px;
+}
+h3{
+    font-family: 'Genos';
+font-weight: 600;
+font-size: 32px;
+line-height: 13px;
+letter-spacing: -0.457589px;
+color: #E4ECFE;
+}
+p{
+    font-family: 'Genos';
+font-weight: 600;
+font-size: 24px;
+line-height: 13px;
+letter-spacing: -0.457589px;
+color: #E4ECFE;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="img_container">
+        <img src="/eko_diary.png">
+    </div>
+    <hr>
+    <h1>Welcome to Eko-Diary!</h1>
+    <h3>Hi <%= username %></h3>
+
+    <p>Thanks for Signing up</p>
+    <p>Enter <%= otp %> to verify your email address. </p>
+    <p>This code expires in an hour.</p>
+    <br>
+    <p>Cheers,</p>
+    <p>The Eko-Diary Team.</p>
+</div>
+</body>
+</html>

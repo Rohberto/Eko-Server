@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(express.urlencoded({
     extended: true
 }))
+app.use( express.static( "./Public" ) );
 app.use(cors());
 connectDB();
 
@@ -31,7 +32,7 @@ const PORT = process.env.PORT || 5000;
 
 
 app.get("/", (req, res) => {
-    res.send("Eko-Diary is running");
+    res.render("welcome.ejs", {username: "RObert", otp: 123456});
 })
 app.use("/auth", authRoute);
 app.use("/tickets", ticketRoute);
