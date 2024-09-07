@@ -19,6 +19,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 app.use( express.static( "./Public" ) );
+app.use( express.static( "./Public" ) );
 app.use(cors());
 connectDB();
 

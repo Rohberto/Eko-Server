@@ -7,7 +7,7 @@ const ejs = require("ejs");
 const sendOtpVerificationEmail = async (result, res) => {
     try{
     const otp = otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
-    const html = await ejs.renderFile('../Server/views/welcome.ejs', {username: result.name, otp: otp}, { async: true }) 
+    const html = await ejs.renderFile('views/welcome.ejs', {username: result.name, otp: otp}, { async: true }) 
     //mailOptions
       const mailOptions = {
         from: process.env.AUTH_USER,
