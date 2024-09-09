@@ -9,6 +9,7 @@ const Tickets = require("../Model/ticket");
 const mailTemplate = require("../Util/ticket_body_template");
 const pdf = require('html-pdf');
 const fs = require('fs');
+const ejs = require("ejs");
 
 ticketRoute.post("/", async (req, res) => {
   try{
@@ -23,8 +24,9 @@ await ticket.save();
         const url = `https://localhost:3000/view/${ticket._id}`;
         const qrCodeImage = await QRCode.toDataURL(url);
 
-        const template = htmlTemplate(qrCodeImage, firstname, event, ticket._id);
-        const bodyTemplate = mailTemplate(firstname, event, ticket._id)
+       // const template = htmlTemplate(qrCodeImage, firstname, event, ticket._id);
+        const template = await ejs.renderFile('views/ticket_template.ejs', {qr: qrCodeImage, firstname, event, id: ticket._id})
+        const bodyTemplate = await ejs.renderFile('views/ticket_body_template.ejs', {firstname, event, id: ticket._id});
   pdf.create(template).toFile(`Order_${ticket._id}.pdf`, async (err, res) => {
       if (err) return  res.json({status: "FAILED", data: err});
 

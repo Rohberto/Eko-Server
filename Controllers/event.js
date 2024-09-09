@@ -57,4 +57,31 @@ const getEvents = async (req, res) => {
     }
 }
 
-module.exports = {createEvent, getEvents};
+const deleteEvent = async (req, res) => {
+    try{
+        const {_id, userId} = req.params;
+        const eventValid = await Event.find({_id});
+        if(!eventValid){
+            return res.json({
+                status: "FAILED",
+                data: "Event doesn't exist"
+            })
+        }
+        if(userId !== eventValid[0].creatorId){
+            return res.json({
+                status: "FAILED",
+                 data: "You are not authorized to delete this event."
+            })
+        }
+         await Event.findByIdAndDelete(_id); 
+        
+          res.json({status: "SUCCESS", data: eventValid[0]._id});
+    }catch (err){
+        return res.status(400).json({
+            status: "FAILED",
+            data: "Event doesn't exist"
+        })
+    }
+  
+}
+module.exports = {createEvent, getEvents, deleteEvent};

@@ -1,5 +1,5 @@
 const express = require("express");
-const { getEvents, createEvent } = require("../Controllers/event");
+const { getEvents, createEvent,  deleteEvent} = require("../Controllers/event");
 const eventRoute = express.Router();
 const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage");
 const multer = require("multer");
@@ -24,5 +24,6 @@ const storage = multer.diskStorage({
 */
 eventRoute.get("/", getEvents);
 eventRoute.post("/create", upload.single("Image") , createEvent);
+eventRoute.delete("/:_id/:userId",  deleteEvent);
 
 module.exports = eventRoute;

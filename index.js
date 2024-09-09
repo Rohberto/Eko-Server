@@ -11,7 +11,16 @@ const connectDB = require("./dbConfig");
 const authRoute = require("./Routes/authRoutes");
 const ticketRoute = require("./Routes/genertae-ticket");
 const eventRoute = require("./Routes/event");
-const { firebaseConfig } = require("./Util/firebase_config");
+
+//adding socket.io configuration
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server,  {
+    cors: {
+        origin: "http://localhost:3000"
+    }
+});
 
 app.use(bodyParser.json({limit: "30mb" , extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
@@ -19,18 +28,10 @@ app.use(express.urlencoded({
     extended: true
 }))
 app.use( express.static( "./Public" ) );
-app.use( express.static( "./Public" ) );
 app.use(cors());
 connectDB();
 
 const PORT = process.env.PORT || 5000;
-// Import the functions you need from the SDKs you need
-
-
-
-// Initialize Firebase
-
-
 
 app.get("/", (req, res) => {
     res.render("welcome.ejs", {username: "RObert", otp: 123456});
@@ -39,6 +40,21 @@ app.use("/auth", authRoute);
 app.use("/tickets", ticketRoute);
 app.use("/events", eventRoute);
 
+io.on('connection', (socket) => {
+    //console.log('a user connected', socket.id);
+    socket.on("event", (event) => {
+        io.emit("new-event", event); 
+    })
+    socket.on("delete-event", (id) => {
+        console.log(id);
+        io.emit("event-deleted", id);
+    });
+  })
+  
+  exports.io = io;
+
 mongoose.connection.once("connected", () => {
-    app.listen(PORT, () => {console.log("server running on:" + PORT)})
+    server.listen(PORT, () => {
+        console.log(` Server running on port ${PORT}`);
+      })
 })
