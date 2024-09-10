@@ -42,16 +42,16 @@ app.use("/events", eventRoute);
 
 io.on('connection', (socket) => {
     //console.log('a user connected', socket.id);
-    socket.on("event", (event) => {
-        io.emit("new-event", event); 
+
+    socket.on("event", (events) => {
+        io.emit("new-event", events); 
     })
-    socket.on("delete-event", (id) => {
-        console.log(id);
-        io.emit("event-deleted", id);
+    socket.on("delete-event", (events) => {
+        io.emit("event-deleted", events);
     });
   })
   
-  exports.io = io;
+
 
 mongoose.connection.once("connected", () => {
     server.listen(PORT, () => {
