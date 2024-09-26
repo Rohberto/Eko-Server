@@ -1,8 +1,10 @@
 const Event = require("../Model/event");
-const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage");
+const { getStorage, deleteObject, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage");
 const{ initializeApp } = require("firebase/app");
 const { firebaseConfig } = require("../Util/firebase_config");
 const index = require("../index");
+
+
 
 initializeApp(firebaseConfig);
 const storage = getStorage();
@@ -14,6 +16,7 @@ const storage = getStorage();
         const dateTime = Date.now().toLocaleString();
 
         const storageRef = ref(storage, `Images/${req.file.filename + "       " + dateTime}`);
+        console.log(storageRef, typeof(storageRef));
         const metadata = {
             contentType: req.file.mimetype,
         };
@@ -56,11 +59,12 @@ const getEvents = async (req, res) => {
     }
 }
 
+
 const deleteEvent = async (req, res) => {
     try{
         const {_id, userId} = req.params;
         const eventValid = await Event.find({_id});
-        if(!eventValid){
+        if(eventValid.length === 0){
             return res.json({
                 status: "FAILED",
                 data: "Event doesn't exist"
@@ -72,14 +76,15 @@ const deleteEvent = async (req, res) => {
                  data: "You are not authorized to delete this event."
             })
         }
-         await Event.findByIdAndDelete(_id); 
+        const fileRef = ref(storage, eventValid[0].image)
+        await deleteObject(fileRef);
+      await Event.findByIdAndDelete(_id);`````````````````````` 
          const events = await Event.find();
-        
-          res.json({status: "SUCCESS", data: events});
+         res.json({status: "SUCCESS", data: events});
     }catch (err){
         return res.status(400).json({
             status: "FAILED",
-            data: "Event doesn't exist"
+            data: err.message
         })
     }
   

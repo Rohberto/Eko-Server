@@ -22,8 +22,11 @@ whatsapp: {type: String}}
     capacity: {type: Number, required: true},
     creatorId: {type: String, required: true},
     price: {ticket_price: {type: Number},
-Free: {type: Boolean}}
+Free: {type: Boolean}}, 
+expireAt: {type: Date, required: true}
+}, {
+    timestamps: true
 });
-
+eventSchema.index({"expireAt": 1}, {expireAfterSeconds: 0});
 const Event = mongoose.model('event', eventSchema);
 module.exports = Event;

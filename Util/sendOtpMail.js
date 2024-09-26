@@ -24,7 +24,7 @@ const sendOtpVerificationEmail = async (result, res) => {
         userId: result._id,
         otp: hashedOtp,
         createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000
+        expireAt: Date.now() + 60
       })
       await newOtp.save();
    

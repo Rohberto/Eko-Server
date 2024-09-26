@@ -70,7 +70,9 @@ User.find({email}).then((result) => {
       status: "FAILED",
       message: "User with email already exists"
     })
-  } else{
+  } 
+  
+  else{
     //now let's create User
     //password handling
 
@@ -281,12 +283,12 @@ const googleAuth = async (req, res) => {
   const email = payload.email;
   const userPresent = await User.find({email});
   const googleUserPresent = await googleUser.find({email});
- // if(userPresent.length){
-    //res.status(409).json({
-   //   status: "FAILED",
-  //    message: "User already exist"
-  //  })
-  //}else
+  if(userPresent.length){
+    res.status(409).json({
+    status: "FAILED",
+   message: "User already exist"
+   })
+  }else
    if(googleUserPresent.length){
     res.status(200).json({
       status: "SUCCESS",
