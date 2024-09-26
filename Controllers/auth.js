@@ -279,17 +279,15 @@ const googleAuth = async (req, res) => {
   audience: client_id,
   });
   const payload = ticket.getPayload();
-  console.log(payload);
   const email = payload.email;
   const userPresent = await User.find({email});
   const googleUserPresent = await googleUser.find({email});
   if(userPresent.length){
-    res.status(409).json({
+  return  res.json({
     status: "FAILED",
    message: "User already exist"
    })
-  }else
-   if(googleUserPresent.length){
+  }else if(googleUserPresent.length){
     res.status(200).json({
       status: "SUCCESS",
       message: "Google User Found",
@@ -310,6 +308,7 @@ const googleAuth = async (req, res) => {
     });
   }
   } catch (err) {
+    console.log(err);
   res.json({
     status: "FAILED",
     message: err.message
